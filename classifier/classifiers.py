@@ -717,11 +717,11 @@ class OneTaskClf:
                 best_fs = curr_fs
 
                 # Saving model
-                torch.save(model, 'net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pth')
+                torch.save(model, 'net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pth')
                 print('model saved')
 
             # Saving log
-            fp = open('log/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pkl', 'wb')
+            fp = open('log/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pkl', 'wb')
 
             pickle.dump(record, fp)
             fp.close()
@@ -734,7 +734,7 @@ class OneTaskClf:
         _, _, test_loader = data_loader(self.opt)
 
         # Loading model
-        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pth')
+        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pth')
         model.cuda()
         model.eval()
 
@@ -761,7 +761,7 @@ class OneTaskClf:
         re = recall_score(y_true, y_pred, average='macro')
         fs = f1_score(y_true, y_pred, average='macro')
 
-        f = open('results/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.csv', 'a')
+        f = open('results/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.csv', 'a')
         f.write('acc,prec,rec,fs\n%.2f,%.2f,%.2f,%.2f\n' % (acc*100, pr*100, re*100, fs*100))
 
         if self.opt.select_clf != 2:
@@ -771,7 +771,7 @@ class OneTaskClf:
 
         # Confusion matrix
         cm = confusion_matrix(y_true, y_pred, list(range(0,5)))
-        plot_confusion_matrix(cm=cm, target_names=labels, title=' ', output_name=clf_label[self.opt.select_clf] + '/' + self.opt.output_filename)
+        plot_confusion_matrix(cm=cm, target_names=labels, title=' ', output_name=clf_label[self.opt.select_clf] + '/' + self.opt.filename)
 
         f.close()
 
