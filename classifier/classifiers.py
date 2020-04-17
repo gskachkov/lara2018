@@ -365,7 +365,7 @@ class MultiTaskClf:
         
     
     def run_training(self):
-        print(clf_label[self.opt.select_clf] +  ' training: ' + self.opt.output_filename)
+        print(clf_label[self.opt.select_clf] +  ' training: ' + self.opt.filename)
 
         # Dataset
         train_loader, val_loader, _ = data_loader(self.opt)
@@ -427,7 +427,7 @@ class MultiTaskClf:
                 best_fs = curr_fs
 
                 # Saving model
-                torch.save(model, 'net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pth')
+                torch.save(model, 'net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pth')
                 print('model saved')
 
             # Saving log
@@ -443,7 +443,7 @@ class MultiTaskClf:
         _, _, test_loader = data_loader(self.opt)
 
         # Loading model
-        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pth')
+        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pth')
         model.cuda()
         # tell to pytorch that we are evaluating the model
         model.eval()
@@ -483,14 +483,14 @@ class MultiTaskClf:
         re = recall_score(y_true_dis, y_pred_dis, average='macro')
         fs = f1_score(y_true_dis, y_pred_dis, average='macro')
 
-        f = open('results/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.csv', 'a')
+        f = open('results/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.csv', 'a')
         f.write('acc,prec,rec,fs\n%.2f,%.2f,%.2f,%.2f\n' % (acc*100, pr*100, re*100, fs*100))
 
         labels_dis = [ 'Healthy', 'Leaf miner', 'Rust', 'Phoma', 'Cercospora' ]
 
         # Confusion matrix
         cm = confusion_matrix(y_true_dis, y_pred_dis, list(range(0,5)))
-        plot_confusion_matrix(cm=cm, target_names=labels_dis, title=' ', output_name= clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '_dis')
+        plot_confusion_matrix(cm=cm, target_names=labels_dis, title=' ', output_name= clf_label[self.opt.select_clf] + '/' + self.opt.filename + '_dis')
 
         # Severity
         acc = accuracy_score(y_true_sev, y_pred_sev)
@@ -504,14 +504,14 @@ class MultiTaskClf:
 
         # Confusion matrix
         cm = confusion_matrix(y_true_sev, y_pred_sev, list(range(0,5)))
-        plot_confusion_matrix(cm=cm, target_names=labels_sev, title=' ', output_name= clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '_sev')
+        plot_confusion_matrix(cm=cm, target_names=labels_sev, title=' ', output_name= clf_label[self.opt.select_clf] + '/' + self.opt.filename + '_sev')
 
         f.close()
 
         return y_true_dis, y_pred_dis, y_true_sev, y_pred_sev
 
     def get_n_params(self):
-        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] +'/' + self.opt.output_filename + '.pth')
+        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] +'/' + self.opt.filename + '.pth')
         pp=0
         for p in list(model.parameters()):
             nn=1
@@ -659,7 +659,7 @@ class OneTaskClf:
                 (epoch+1, epochs, data_type, metrics['loss'], metrics['acc']))
 
     def run_training(self):
-        print(clf_label[self.opt.select_clf] +  ' training: ' + self.opt.output_filename)
+        print(clf_label[self.opt.select_clf] +  ' training: ' + self.opt.filename)
 
         # Data
         train_loader, val_loader, _ = data_loader(self.opt)
@@ -778,7 +778,7 @@ class OneTaskClf:
         return y_true, y_pred
 
     def get_n_params(self):
-        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pth')
+        model = torch.load('net_weights/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pth')
         pp=0
         for p in list(model.parameters()):
             nn=1
