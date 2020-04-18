@@ -431,7 +431,7 @@ class MultiTaskClf:
                 print('model saved')
 
             # Saving log
-            fp = open('log/' + clf_label[self.opt.select_clf] + '/' + self.opt.output_filename + '.pkl', 'wb')
+            fp = open('log/' + clf_label[self.opt.select_clf] + '/' + self.opt.filename + '.pkl', 'wb')
             pickle.dump(record, fp)
             fp.close()
 
