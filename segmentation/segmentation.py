@@ -41,8 +41,8 @@ def build_network(snapshot, backend):
     
     # Load a pretrained network    
     if snapshot is not None:
-        _, epoch = os.path.basename(snapshot).split('_')
-        epoch = int(epoch)
+       # _, epoch = os.path.basename(snapshot).split('_')
+        epoch = int(10)
         net.load_state_dict(torch.load(snapshot))
     
     # Sending model to GPU
